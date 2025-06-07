@@ -3,9 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemondae Stand Business</title>
+    <title>Lemonade Stand Business</title>
 </head>
 <body>
-    
+    <!-- Starting Screen -->
+    <h1>🍋 Welcome to the Lemonade Stand Game🍋</h1>
+
+    <label for="co-name">Choose Your Business' Name:</label>
+    <input id="co-name" type="text" placeholder="Company Name">
+
+    <br>
+
+    <label for="start-budget">Choose Your Starting Budget: $<strong><span id="budgetVal">60</span></strong></label>
+    <div>
+        <span>$20<br><small>Hard</small></span>
+        
+        <input type="range" id="start-budget" min="20" max="100" step="1" value="60" oninput="updateBudgetVal(this.value)">
+        
+        <span>$100<br><small>Easy</small></span>
+    </div>
+
+    <fieldset>
+        <legend>Select Location:</legend>
+
+        <label>
+            <input type="radio" value="park">
+            Park
+        </label>
+
+        <label>
+            <input type="radio" value="mall">
+            Mall
+        </label>
+
+        <label>
+            <input type="radio" value="food-truck">
+            Food Truck
+        </label>
+    </fieldset>
+
+
+    <!-- Morning Briefing -->
+    <h1>Morning Briefing:</h1>
+    <p><strong>Weather:</strong> <span id="weather">Sunny ☀️</span></p>
+    <p><strong>Prices:</strong></p>
+    <ul id="brieing-prices">
+        <li><strong>🍋 Lemons:</strong> $<span id="lemons"><i>55.5</i></span></li>
+        <li><strong>🧂 Sugar:</strong> $<span id="sugar"><i>55.5</i></span></li>
+        <li><strong>🥤 Cups:</strong> $<span id="cups"><i>55.5</i></span></li>
+    </ul>
 </body>
 </html>
