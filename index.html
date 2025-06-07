@@ -1,11 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lemondae Stand Business</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lemonade Stand</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+  <!-- Start Screen -->
+  <div id="start-screen">
+    <h1>Welcome to the Lemonade Stand Game!</h1>
+    <label for="player-name">Player Name:</label>
+    <input type="text" id="player-name" placeholder="Enter your name">
     
+    <label for="company-name">Company Name:</label>
+    <input type="text" id="company-name" placeholder="Enter your company name">
+    
+    <fieldset>
+      <legend>Starting Budget:</legend>
+      <div><input type="radio" name="budget" value="100"> Easy - $100</div>
+      <div><input type="radio" name="budget" value="75"> Medium - $75</div>
+      <div><input type="radio" name="budget" value="50"> Hard - $50</div>
+    </fieldset>
+    
+    <button id="start-game-btn">Start Game</button>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud" style="display: none;">
+    <p>👤 Player: <span id="hud-player-name"></span></p>
+    <p>🏢 Company: <span id="hud-company-name"></span></p>
+    <p>📅 Day: <span id="hud-day">1</span></p>
+    <p>💰 Balance: <span id="hud-budget">$0.00</span></p>
+    <p>📦 Inventory: 🍋 <span id="hud-lemons">0</span> | 🧂 <span id="hud-sugar">0</span> | 🥤 <span id="hud-cups">0</span></p>
+    <p>🌤️ Weather: <span id="hud-weather"></span></p>
+  </div>
+
+  <!-- Morning Briefing -->
+  <div id="morning-briefing" style="display: none;">
+    <h2>Morning Briefing - Day <span id="day-number">1</span></h2>
+    <p>🌤️ <strong>Weather:</strong> <span id="weather-text"></span></p>
+    <div id="brief-prices">
+      <p>💰 <strong>Prices:</strong></p>
+      <p>&nbsp;&nbsp;&nbsp;🍋 Lemons: $<span id="price-lemons">0.00</span></p>
+      <p>&nbsp;&nbsp;&nbsp;🧂 Sugar: $<span id="price-sugar">0.00</span></p>
+      <p>&nbsp;&nbsp;&nbsp;🥤 Cups: $<span id="price-cups">0.00</span></p>
+    </div>
+    <div id="brief-news" class="news-ticker">
+      <div class="news-track">
+        <span id="news-text"></span>
+      </div>
+    </div>
+    <p>📦 <strong>Inventory:</strong> <span id="inventory-text"></span></p>
+    <p>🔔 <strong>Event:</strong> <span id="event-text"></span></p>
+    <button id="to-decision-btn">Continue</button>
+  </div>
+
+  <!-- Decision Screen -->
+  <div id="decision-screen" style="display: none;">
+    <h2>Business Decisions – Day <span id="decision-day-number">1</span></h2>
+
+    <label for="price-per-cup">💵 Price per Cup ($0.25 - $5.00):</label>
+    <input type="number" id="price-per-cup" min="0.25" max="5" step="0.05" value="1.00">
+
+    <label for="cups-to-make">🥤 Cups to Prepare:</label>
+    <input type="number" id="cups-to-make" min="1" value="10">
+
+    <h3>🧂 Buy Ingredients for Today</h3>
+    <label for="buy-lemons">🍋 Lemons to Buy ($<span id="price-lemons-label"></span> each):</label>
+    <input type="number" id="buy-lemons" min="0" value="0">
+
+    <label for="buy-sugar">🧂 Sugar to Buy ($<span id="price-sugar-label"></span> each):</label>
+    <input type="number" id="buy-sugar" min="0" value="0">
+
+    <label for="buy-cups">🥤 Cups to Buy ($<span id="price-cups-label"></span> each):</label>
+    <input type="number" id="buy-cups" min="0" value="0">
+
+    <p>💼 Ingredient Cost: <span id="ingredient-cost">$0.00</span></p>
+
+    <h3>📢 Marketing Strategy</h3>
+    <label><input type="radio" name="marketing" value="0" checked> None (Free)</label>
+    <label><input type="radio" name="marketing" value="10"> Light ($10 – small boost)</label>
+    <label><input type="radio" name="marketing" value="25"> Aggressive ($25 – big boost)</label>
+
+    <p>🏠 Rent: $5</p>
+    <p>🧮 Total Cost: <span id="estimated-cost">$0.00</span></p>
+
+    <button id="sell-btn">Sell Lemonade</button>
+  </div>
+
+  <!-- Sales Summary -->
+  <div id="sales-summary" style="display: none;">
+    <h2>Sales Summary - Day <span id="summary-day-number">1</span></h2>
+    <p>🌤️ Weather: <span id="summary-weather"></span></p>
+    <p>👥 Customers: <span id="summary-customers">0</span></p>
+    <p>🥤 Cups Sold: <span id="summary-cups-sold">0</span></p>
+    <p>💵 Revenue: <span id="summary-revenue">$0.00</span></p>
+    <p>💸 Expenses: <span id="summary-expenses">$0.00</span></p>
+    <p>📈 Profit: <span id="summary-profit">$0.00</span></p>
+    <p>🏦 New Balance: <span id="summary-budget">$0.00</span></p>
+    <button id="next-day-btn">Next Day</button>
+  </div>
+
+  <!-- Charts -->
+  <div id="weekly-summary" style="display: none;">
+    <canvas id="weekly-profit-chart"></canvas>
+    <canvas id="weekly-expense-chart"></canvas>
+    <canvas id="weekly-revenue-chart"></canvas>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="failure-screen" style="display: none;">
+    <h2>😢 You're out of money!</h2>
+    <p>Better luck next time.</p>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>

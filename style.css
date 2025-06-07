@@ -1,0 +1,197 @@
+/* === GENERAL LAYOUT === */
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #fffde7, #ffe082);
+  color: #333;
+  padding: 0;
+  text-align: center;
+}
+
+h1, h2 {
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 15px auto;
+  font-size: 1em;
+  background-color: #ffeb3b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+button:hover {
+  background-color: #fdd835;
+  transform: translateY(-1px);
+}
+
+input[type="text"], input[type="number"] {
+  padding: 8px;
+  margin: 5px 0 15px;
+  font-size: 1em;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+fieldset {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px auto;
+  width: 85%;
+  max-width: 400px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+fieldset legend {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+fieldset div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  justify-content: flex-start;
+}
+
+fieldset input[type="radio"] {
+  margin: 0;
+}
+
+label {
+  display: block;
+  margin: 8px auto 2px;
+  font-weight: 500;
+}
+
+/* === HUD === */
+#hud {
+  display: none;
+  flex-direction: column;
+  background: #fffde7;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 2px solid #fdd835;
+  text-align: left;
+  max-width: 700px;
+  margin: auto;
+  border-radius: 0 0 10px 10px;
+}
+
+#hud p {
+  margin: 5px 10px;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+/* === SCREENS === */
+#start-screen, #morning-briefing, #decision-screen, #sales-summary, #weekly-summary, #failure-screen {
+  padding: 25px;
+  max-width: 700px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+/* === PRICES LIST === */
+#brief-prices {
+  margin-top: 10px;
+}
+
+#brief-prices ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  display: inline-block;
+  text-align: left;
+}
+
+#brief-prices li {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 10px;
+  min-width: 220px;
+}
+
+/* === EXPENSE BREAKDOWN LIST === */
+#sales-summary ul {
+  list-style: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+#sales-summary ul li {
+  margin: 2px 0;
+  font-weight: 500;
+}
+
+#summary-expenses,
+#summary-profit,
+#summary-revenue,
+#summary-budget {
+  font-weight: bold;
+}
+
+/* === NEWS TICKER === */
+.news-ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  background: #fff9c4;
+  border: 1px solid #fbc02d;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+.news-track {
+  display: inline-block;
+  animation: scroll-left 20s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* === SECTION HEADINGS === */
+#sales-summary h2,
+#weekly-summary h2,
+#morning-briefing h2,
+#decision-screen h2 {
+  font-weight: 700;
+  border-bottom: 2px solid #ffe082;
+  padding-bottom: 5px;
+}
+
+/* === RESPONSIVE === */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 90%;
+  }
+  fieldset, input[type="text"], input[type="number"] {
+    width: 95%;
+  }
+  #hud {
+    padding: 10px;
+  }
+}
