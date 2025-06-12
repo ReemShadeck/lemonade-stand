@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lemonade Stand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HUD -->
+    <div class="hud" id="hud">
+        <div class="hud-content">
+            <div class="hud-left">
+                <button class="help-btn" onclick="showHelp()">
+                    <i class="fas fa-question-circle"></i> Help
+                </button>
+            </div>
+            <div class="hud-center">
+                <div class="hud-item">
+                    <i class="fas fa-store"></i>
+                    <span id="company-name-display"></span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <span id="day-display"></span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-calendar-week"></i>
+                    Week <span id="week-display">1</span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-cloud-sun" id="weather-icon-hud"></i>
+                    <span id="weather-display-hud"></span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="location-display"></span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span id="balance-display">0.00</span>
+                </div>
+                <div class="hud-item lemon-dropdown">
+                    <i class="fas fa-lemon"></i>
+                    <span id="lemons-display">0</span>
+                    <div class="lemon-details" id="lemon-details"></div>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-cube"></i>
+                    <span id="sugar-display">0</span>
+                </div>
+                <div class="hud-item">
+                    <i class="fas fa-glass-water"></i>
+                    <span id="cups-display">0</span>
+                </div>
+            </div>
+            <div class="hud-right">
+                <button class="save-btn" onclick="saveGame()">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div class="screen active" id="start-screen">
+        <div class="container">
+            <div class="card">
+                <h1><i class="fas fa-lemon"></i> Lemonade Stand</h1>
+                
+                <div class="form-group">
+                    <label for="company-name">Company Name</label>
+                    <input type="text" id="company-name" placeholder="Enter your company name">
+                </div>
+
+                <div class="form-group">
+                    <label for="starting-budget">Starting Budget: $<span id="budget-value">60</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="starting-budget" class="slider" min="20" max="100" value="60">
+                        <div class="slider-labels">
+                            <span>$20 (Hard)</span>
+                            <span>$100 (Easy)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <div class="location-tiles">
+                        <div class="location-tile">
+                            <input type="radio" id="location-mall" name="location" value="mall">
+                            <label for="location-mall">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span class="location-name">Mall</span>
+                            </label>
+                        </div>
+                        <div class="location-tile">
+                            <input type="radio" id="location-park" name="location" value="park">
+                            <label for="location-park">
+                                <i class="fas fa-tree"></i>
+                                <span class="location-name">Park</span>
+                            </label>
+                        </div>
+                        <div class="location-tile">
+                            <input type="radio" id="location-truck" name="location" value="truck">
+                            <label for="location-truck">
+                                <i class="fas fa-truck"></i>
+                                <span class="location-name">Food Truck</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Game Mode</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="scored-mode" name="game-mode" value="scored" checked>
+                            <label for="scored-mode">Scored Mode (28 days)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="unlimited-mode" name="game-mode" value="unlimited">
+                            <label for="unlimited-mode">Unlimited Mode</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" id="start-btn" disabled onclick="startGame()">
+                    <i class="fas fa-play"></i> Start Game
+                </button>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <label for="load-save" class="btn btn-secondary" style="cursor: pointer;">
+                        <i class="fas fa-upload"></i> Load Save File
+                        <input type="file" id="load-save" accept=".txt" style="display: none;" onchange="loadSaveFile(event)">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Morning Briefing Screen -->
+    <div class="screen" id="morning-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-sun"></i> Morning Briefing</h2>
+                
+                <div class="news-ticker">
+                    <p id="news-ticker-text"></p>
+                </div>
+
+                <div class="weather-display">
+                    <i class="weather-icon" id="weather-icon"></i>
+                    <div>
+                        <h3 id="weather-text"></h3>
+                        <p id="weather-desc"></p>
+                    </div>
+                </div>
+
+                <div id="event-display" style="display: none;">
+                    <div class="card event-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Special Event!</h3>
+                        <p id="event-text"></p>
+                    </div>
+                </div>
+
+                <h3>Today's Prices</h3>
+                <div class="inventory-grid">
+                    <div class="inventory-item">
+                        <i class="fas fa-lemon"></i>
+                        <div>Lemons</div>
+                        <div>$<span id="lemon-price">0.00</span> each</div>
+                    </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-cube"></i>
+                        <div>Sugar</div>
+                        <div>$<span id="sugar-price">0.00</span> per bag</div>
+                    </div>
+                    <div class="inventory-item">
+                        <i class="fas fa-glass-water"></i>
+                        <div>Cups</div>
+                        <div>$<span id="cup-price">0.00</span> each</div>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="showBusinessScreen()">
+                    <i class="fas fa-briefcase"></i> Make Business Decisions
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Decisions Screen -->
+    <div class="screen" id="business-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-briefcase"></i> Business Decisions</h2>
+
+                <div class="form-group">
+                    <label for="cup-price-input">Price per Cup</label>
+                    <div class="price-input-group">
+                        <input type="number" id="cup-price-input" class="price-input" min="0.00" max="10.00" step="0.01" value="1.00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cups-to-make">Cups to Prepare</label>
+                    <input type="number" id="cups-to-make" min="0" max="1000" value="20">
+                </div>
+
+                <div id="truck-location" style="display: none;">
+                    <div class="form-group">
+                        <label for="sub-location">Today's Location</label>
+                        <select id="sub-location">
+                            <option value="school">School</option>
+                            <option value="park">Park</option>
+                            <option value="stadium">Stadium</option>
+                            <option value="office">Office</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3>Purchase Ingredients</h3>
+                <div class="inventory-grid">
+                    <div class="inventory-item interactive">
+                        <i class="fas fa-lemon"></i>
+                        <div>Lemons</div>
+                        <div>Current: <span id="current-lemons">0</span></div>
+                        <input type="number" id="buy-lemons" min="0" value="0" onchange="updatePriceCalculation()">
+                        <div class="price-info">
+                            @$<span id="lemon-unit-price">0.00</span> each
+                            <br>Total: $<span id="lemon-total">0.00</span>
+                        </div>
+                    </div>
+                    <div class="inventory-item interactive">
+                        <i class="fas fa-cube"></i>
+                        <div>Sugar Bags</div>
+                        <div>Current: <span id="current-sugar">0</span></div>
+                        <input type="number" id="buy-sugar" min="0" value="0" onchange="updatePriceCalculation()">
+                        <div class="price-info">
+                            @$<span id="sugar-unit-price">0.00</span> per bag
+                            <br>Total: $<span id="sugar-total">0.00</span>
+                        </div>
+                    </div>
+                    <div class="inventory-item interactive">
+                        <i class="fas fa-glass-water"></i>
+                        <div>Cups</div>
+                        <div>Current: <span id="current-cups">0</span></div>
+                        <input type="number" id="buy-cups" min="0" value="0" onchange="updatePriceCalculation()">
+                        <div class="price-info">
+                            @$<span id="cup-unit-price">0.00</span> each
+                            <br>Total: $<span id="cup-total">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="autoCalculate()">
+                    <i class="fas fa-calculator"></i> Auto-Calculate Ingredients
+                </button>
+
+                <div class="form-group">
+                    <label>Marketing Strategy</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-none" name="marketing" value="none" checked>
+                            <label for="marketing-none">None</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-social" name="marketing" value="social">
+                            <label for="marketing-social">Social Media (2 cups)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-flyers" name="marketing" value="flyers">
+                            <label for="marketing-flyers">Bold Flyers ($5)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-radio" name="marketing" value="radio">
+                            <label for="marketing-radio">Local Radio ($15)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-push" name="marketing" value="push">
+                            <label for="marketing-push">Social Push Ad ($10)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="marketing-agency" name="marketing" value="agency">
+                            <label for="marketing-agency">Ad Agency ($30)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="proceedToReceipt()">
+                    <i class="fas fa-shopping-cart"></i> Review & Purchase
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Screen -->
+    <div class="screen" id="receipt-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-receipt"></i> Purchase Receipt</h2>
+                
+                <div id="receipt-content"></div>
+
+                <button class="btn" onclick="startSelling()">
+                    <i class="fas fa-store"></i> Sell Lemonade
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Summary Screen -->
+    <div class="screen" id="summary-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-chart-line"></i> Day Summary</h2>
+                
+                <div id="summary-content"></div>
+
+                <button class="btn" onclick="nextDay()">
+                    <i class="fas fa-arrow-right"></i> Continue to Next Day
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Recap Screen -->
+    <div class="screen" id="weekly-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-calendar-week"></i> Weekly Recap</h2>
+                
+                <div class="stats-grid" id="weekly-stats"></div>
+
+                <div class="chart-container">
+                    <canvas id="profit-chart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="inventory-chart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="customers-chart"></canvas>
+                </div>
+
+                <button class="btn" onclick="continueFromWeekly()">
+                    <i class="fas fa-arrow-right"></i> Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Score Screen -->
+    <div class="screen" id="final-screen">
+        <div class="container">
+            <div class="card">
+                <h2><i class="fas fa-trophy"></i> Final Score</h2>
+                
+                <div class="grade-display" id="final-grade"></div>
+                
+                <div class="stats-grid" id="final-stats"></div>
+
+                <button class="btn" onclick="location.reload()">
+                    <i class="fas fa-redo"></i> Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="help-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeHelp()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-question-circle"></i> How to Play</h2>
+            
+            <h3>Game Structure</h3>
+            <p>Each day follows this sequence:</p>
+            <ol>
+                <li><strong>Morning Briefing:</strong> View weather forecast and ingredient prices</li>
+                <li><strong>Business Decisions:</strong> Set prices, buy ingredients, choose marketing</li>
+                <li><strong>Selling:</strong> Customers buy based on weather, price, and marketing</li>
+                <li><strong>Day Summary:</strong> Review your performance</li>
+            </ol>
+
+            <h3>Weather Effects</h3>
+            <ul>
+                <li><strong>Sunny:</strong> High demand, especially with reasonable prices</li>
+                <li><strong>Cloudy:</strong> Moderate demand</li>
+                <li><strong>Rainy:</strong> Low demand unless at Mall</li>
+                <li><strong>Heatwave:</strong> Very high demand, customers pay more</li>
+                <li><strong>Snowstorm:</strong> Very low demand everywhere</li>
+            </ul>
+
+            <h3>Pricing Strategy</h3>
+            <ul>
+                <li>Lower prices attract more customers</li>
+                <li>Higher prices reduce demand but increase profit per cup</li>
+                <li>Weather affects what customers are willing to pay</li>
+                <li>Prices above $3.00 significantly reduce demand</li>
+            </ul>
+
+            <h3>Ingredients</h3>
+            <ul>
+                <li><strong>Recipe:</strong> 1 cup = 1 lemon + 0.5 sugar bags + 1 cup</li>
+                <li><strong>Lemons:</strong> Expire in 1-3 days (shown after purchase)</li>
+                <li><strong>Sugar & Cups:</strong> Never expire</li>
+                <li>Buy extra to avoid running out during busy days</li>
+            </ul>
+
+            <h3>Marketing Options</h3>
+            <ul>
+                <li><strong>None:</strong> No cost, no effect</li>
+                <li><strong>Social Media:</strong> Free, small boost</li>
+                <li><strong>Bold Flyers:</strong> $5, better on sunny days and weekends</li>
+                <li><strong>Local Radio:</strong> $15, most effective at Mall</li>
+                <li><strong>Social Push:</strong> $10, works everywhere</li>
+                <li><strong>Ad Agency:</strong> $30, reliable large boost</li>
+            </ul>
+
+            <h3>Locations</h3>
+            <ul>
+                <li><strong>Mall:</strong> High rent ($10/day), consistent high traffic</li>
+                <li><strong>Park:</strong> Low rent ($3/day), very weather-dependent</li>
+                <li><strong>Food Truck:</strong> Medium rent ($5/day), varies by sub-location</li>
+            </ul>
+
+            <h3>Upload Save File</h3>
+            <ul>
+                <li>Load a previously saved game state</li>
+                <li>Continue from where you left off</li>
+                <li>Save files are in .txt format</li>
+            </ul>
+            
+            <h3>Demand Factors</h3>
+            <ul>
+                <li>Base demand varies by location (25-45 customers)</li>
+                <li>Heatwave can double demand (2.0x multiplier)</li>
+                <li>Health craze event adds extra 15% boost</li>
+                <li>Perfect price point: $1.50-2.00</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Journal Button -->
+    <button class="journal-btn" onclick="showJournal()">
+        <i class="fas fa-book"></i> Journal
+    </button>
+
+    <!-- Journal Modal -->
+    <div class="modal" id="journal-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeJournal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2><i class="fas fa-book"></i> Business Journal</h2>
+            <div id="journal-content"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
