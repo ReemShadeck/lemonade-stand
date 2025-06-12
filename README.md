@@ -3,6 +3,8 @@
 **Run your own lemonade stand — right in your browser!**  
 No install needed. Just click **[Play Now](https://reemshadeck.github.io/lemonade-stand)** and start selling!
 
+![Flowchart Overview](lemonade-flowchart.svg)
+
 ---
 
 ## 🎯 Your Goal
