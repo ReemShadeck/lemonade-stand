@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1200 1500" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1200 1300" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
       .box { fill: #fff; stroke: #6B46C1; stroke-width: 3; rx: 10; filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.1)); }
